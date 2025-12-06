@@ -27,20 +27,20 @@ scrape_configs:
   # GMX Indexer application metrics
   - job_name: 'gmx-indexer'
     static_configs:
-      - targets: ['gmx-indexer:9090']
+      - targets: ['gmx-ponder:42069']
     scrape_interval: 10s
     metrics_path: '/metrics'
 
   # PostgreSQL metrics
   - job_name: 'postgres'
     static_configs:
-      - targets: ['postgres-exporter:9187']
+      - targets: ['gmx-postgres-exporter:9187']
     scrape_interval: 15s
 
   # Redis metrics
   - job_name: 'redis'
     static_configs:
-      - targets: ['redis-exporter:9121']
+      - targets: ['gmx-redis-exporter:9121']
     scrape_interval: 15s
 
   # Nginx metrics
