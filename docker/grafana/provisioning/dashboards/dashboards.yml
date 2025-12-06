@@ -1,0 +1,39 @@
+# Grafana Dashboards Configuration
+apiVersion: 1
+
+providers:
+  # GMX Indexer specific dashboards
+  - name: 'gmx-indexer'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/gmx
+
+  # Infrastructure monitoring dashboards
+  - name: 'infrastructure'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/infrastructure
+
+  # Application performance monitoring
+  - name: 'apm'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/apm
+
+  # Business intelligence dashboards
+  - name: 'business'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/business

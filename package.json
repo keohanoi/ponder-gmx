@@ -1,0 +1,32 @@
+{
+  "name": "ponder-gmx",
+  "version": "1.0.0",
+  "description": "GMX v2 Indexer for Mantle Sepolia using Ponder",
+  "type": "module",
+  "scripts": {
+    "dev": "ponder dev",
+    "start": "ponder start",
+    "serve": "ponder serve",
+    "codegen": "ponder codegen",
+    "db:migrate": "ponder db migrate"
+  },
+  "keywords": [
+    "ponder",
+    "indexer",
+    "gmx",
+    "mantle",
+    "defi"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ponder": "^0.15.15"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.130",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.14.0"
+  }
+}

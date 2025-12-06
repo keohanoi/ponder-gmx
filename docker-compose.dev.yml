@@ -1,0 +1,73 @@
+# Development Override Configuration
+
+services:
+  # Development-specific database configuration
+  postgres:
+    ports:
+      - "5432:5432"  # Expose for local access
+    environment:
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: gmx_indexer  # Ensure the database is created
+    volumes:
+      - ./docker/init-scripts:/docker-entrypoint-initdb.d
+      - postgres_dev_data:/var/lib/postgresql/data  # Separate dev data
+
+  # Development Redis (no password for simplicity)
+  redis:
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ""
+
+  # Development indexer with hot reload
+  gmx-indexer:
+    build:
+      target: development  # Use development stage
+    environment:
+      NODE_ENV: development
+      PONDER_LOG_LEVEL: debug
+      DATABASE_URL: postgresql://gmx_user:devpassword@postgres:5432/gmx_indexer
+      DATABASE_SCHEMA: gmx_indexer
+      REDIS_URL: redis://redis:6379
+      PONDER_SECRET: devsecret
+    volumes:
+      # Mount only specific directories to avoid overwriting built packages
+      - ./src:/app/src
+      - ./abis:/app/abis
+      - ./ponder.config.ts:/app/ponder.config.ts
+      - ./ponder.schema.ts:/app/ponder.schema.ts
+      - ./tsconfig.base.json:/app/tsconfig.base.json
+      - ./package.json:/app/package.json
+      - dev_logs:/app/logs
+    ports:
+      - "42069:42069"  # Direct access to app
+      - "9090:9090"    # Metrics port
+
+  # Simplified nginx for development
+  nginx:
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8080:80"  # Different port to avoid conflicts
+
+  # Development Grafana with open permissions
+  grafana:
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+    ports:
+      - "3000:3000"
+
+  # Expose Prometheus in development
+  prometheus:
+    ports:
+      - "9091:9090"
+
+volumes:
+  postgres_dev_data:
+  dev_logs:
+
+networks:
+  default:
+    driver: bridge

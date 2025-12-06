@@ -1,0 +1,143 @@
+# Docker ignore file for GMX Indexer
+# This file excludes unnecessary files from the Docker build context
+
+# Documentation
+*.md
+README*
+CHANGELOG*
+LICENSE*
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker files (avoid nested Docker builds)
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Development files
+.env*
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn
+
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+.coverage
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+
+# Build outputs (will be generated in container)
+dist
+build
+.next
+.nuxt
+
+# Testing
+.jest
+test-results
+coverage
+
+# Temporary files
+tmp
+temp
+.tmp
+.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment files (security sensitive)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# Docker volumes and data
+docker/data/
+volumes/
+pgdata/
+redis-data/
+
+# Backups
+backups/
+*.backup
+*.bak
+*.sql
+*.dump
+
+# SSL certificates (security sensitive)
+ssl/
+certs/
+*.pem
+*.key
+*.crt
+
+# Monitoring data
+prometheus-data/
+grafana-data/
+
+# Large media files
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.iso
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Package files
+*.deb
+*.rpm
+
+# Python (if any helper scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Memory files
+memories/
+.serena/
+
+# Temporary docker files
+.dockertmp/

@@ -1,0 +1,71 @@
+# Prometheus Configuration for GMX Indexer Monitoring
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'gmx-indexer'
+    environment: 'docker'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "rules/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # GMX Indexer application metrics
+  - job_name: 'gmx-indexer'
+    static_configs:
+      - targets: ['gmx-indexer:9090']
+    scrape_interval: 10s
+    metrics_path: '/metrics'
+
+  # PostgreSQL metrics
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 15s
+
+  # Redis metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 15s
+
+  # Nginx metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-exporter:9113']
+    scrape_interval: 15s
+
+  # Node/system metrics
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # Container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 15s
+
+# Remote storage configuration (optional)
+# remote_write:
+#   - url: "https://your-remote-storage/api/v1/write"
+#     headers:
+#       Authorization: "Bearer YOUR_TOKEN"
+
+# Storage configuration handled via command line arguments
+# See docker-compose.yml for --storage.tsdb.retention.time and --storage.tsdb.retention.size
