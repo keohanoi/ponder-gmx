@@ -1,0 +1,140 @@
+erDiagram
+    %% GMX v2 PostgreSQL Database Schema for Mantle Sepolia
+    %% Generated from ponder.schema.ts
+
+    ACCOUNT {
+        varchar address PK "Primary key - Ethereum address"
+        integer firstSeenAt "Unix timestamp of first activity"
+        integer lastActiveAt "Unix timestamp of last activity"
+        bigint totalTradingVolume "Total trading volume in USD"
+        integer totalPositions "Number of positions opened"
+        integer totalLiquidations "Number of liquidations"
+        bigint realizedPnl "Realized profit/loss in USD"
+    }
+
+    MARKET {
+        varchar address PK "Primary key - Market contract address"
+        varchar longToken "Long token contract address"
+        varchar shortToken "Short token contract address"
+        varchar indexToken "Index token contract address"
+        varchar marketToken "GM token contract address"
+        boolean isDisabled "Market disabled status"
+        integer createdAt "Unix timestamp of market creation"
+    }
+
+    DEPOSIT_EVENT {
+        varchar id PK "Primary key - txHash-logIndex"
+        varchar key "Deposit key for tracking execution"
+        varchar account FK "Account address"
+        varchar market FK "Market contract address"
+        varchar token "Token contract address"
+        bigint tokensLong "Long token amount"
+        bigint tokensShort "Short token amount"
+        bigint marketTokens "Market token amount"
+        varchar status "created/executed/cancelled"
+        bigint executionPrice "Execution price (nullable)"
+        integer blockNumber "Block number"
+        integer timestamp "Unix timestamp"
+        varchar transactionHash "Transaction hash"
+    }
+
+    WITHDRAWAL_EVENT {
+        varchar id PK "Primary key - txHash-logIndex"
+        varchar key "Withdrawal key for tracking execution"
+        varchar account FK "Account address"
+        varchar market FK "Market contract address"
+        bigint marketTokens "Market tokens to withdraw"
+        bigint minLongTokenAmount "Minimum long token amount"
+        bigint minShortTokenAmount "Minimum short token amount"
+        bigint longTokenAmount "Actual long token amount (nullable)"
+        bigint shortTokenAmount "Actual short token amount (nullable)"
+        varchar status "created/executed/cancelled"
+        integer blockNumber "Block number"
+        integer timestamp "Unix timestamp"
+        varchar transactionHash "Transaction hash"
+    }
+
+    ORDER_EVENT_V2 {
+        varchar id PK "Primary key - txHash-logIndex"
+        varchar key "Order key for tracking execution"
+        varchar account FK "Account address"
+        varchar market FK "Market contract address"
+        varchar collateralToken "Collateral token address"
+        bigint sizeInUsd "Position size in USD"
+        bigint sizeInTokens "Position size in tokens"
+        bigint collateralDeltaAmount "Collateral delta amount"
+        bigint executionPrice "Order execution price"
+        boolean isLong "Long or short position"
+        integer orderType "0=MarketIncrease, 1=LimitIncrease, etc."
+        varchar status "created/executed/cancelled"
+        integer blockNumber "Block number"
+        integer timestamp "Unix timestamp"
+        varchar transactionHash "Transaction hash"
+    }
+
+    POSITION_EVENT_V2 {
+        varchar id PK "Primary key - txHash-logIndex"
+        varchar account FK "Account address"
+        varchar market FK "Market contract address"
+        varchar collateralToken "Collateral token address"
+        varchar eventType "increase/decrease/liquidate"
+        bigint sizeInUsd "Position size in USD"
+        bigint sizeInTokens "Position size in tokens"
+        bigint collateralDeltaAmount "Collateral delta amount"
+        bigint executionPrice "Execution price"
+        bigint realizedPnlUsd "Realized PnL in USD"
+        boolean isLong "Long or short position"
+        integer blockNumber "Block number"
+        integer timestamp "Unix timestamp"
+        varchar transactionHash "Transaction hash"
+    }
+
+    SWAP_EVENT_V2 {
+        varchar id PK "Primary key - txHash-logIndex"
+        varchar account FK "Account address"
+        varchar tokenIn "Input token address"
+        varchar tokenOut "Output token address"
+        bigint amountIn "Input token amount"
+        bigint amountOut "Output token amount"
+        bigint priceImpactUsd "Price impact in USD (can be negative)"
+        integer blockNumber "Block number"
+        integer timestamp "Unix timestamp"
+        varchar transactionHash "Transaction hash"
+    }
+
+    DAILY_STATS {
+        varchar id PK "Primary key - date-chain format"
+        varchar date "Date in YYYY-MM-DD format"
+        varchar chain "Blockchain name (mantleSepolia)"
+        bigint totalVolumeUsd "Total daily volume in USD"
+        bigint totalSwapVolumeUsd "Total swap volume in USD"
+        bigint totalPositionVolumeUsd "Total position volume in USD"
+        bigint totalFees "Total fees collected"
+        integer totalLiquidations "Number of liquidations"
+        bigint totalLiquidationVolume "Total liquidation volume"
+        integer uniqueUsers "Number of unique users"
+        bigint totalDeposits "Total deposit volume"
+        bigint totalWithdrawals "Total withdrawal volume"
+        bigint openInterestLong "Open interest for long positions"
+        bigint openInterestShort "Open interest for short positions"
+    }
+
+    %% Relationships
+    ACCOUNT ||--o{ DEPOSIT_EVENT : "has many deposits"
+    ACCOUNT ||--o{ WITHDRAWAL_EVENT : "has many withdrawals"
+    ACCOUNT ||--o{ ORDER_EVENT_V2 : "has many orders"
+    ACCOUNT ||--o{ POSITION_EVENT_V2 : "has many positions"
+    ACCOUNT ||--o{ SWAP_EVENT_V2 : "has many swaps"
+
+    MARKET ||--o{ DEPOSIT_EVENT : "receives deposits"
+    MARKET ||--o{ WITHDRAWAL_EVENT : "processes withdrawals"
+    MARKET ||--o{ ORDER_EVENT_V2 : "executes orders"
+    MARKET ||--o{ POSITION_EVENT_V2 : "manages positions"
+
+    %% Indexes (implied by Ponder)
+    %% account.address (PK)
+    %% market.address (PK)
+    %% *_event.account (FK index)
+    %% *_event.market (FK index)
+    %% *_event.blockNumber (index for time-based queries)
+    %% *_event.timestamp (index for time-based queries)

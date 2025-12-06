@@ -45,17 +45,168 @@ This indexer tracks GMX v2 events including:
    npm start
    ```
 
-## Docker Setup
+## Docker Deployment
 
-1. **Using Docker Compose:**
+### 🚀 Quick Start Scripts
+
+The easiest way to deploy is using the provided startup scripts:
+
+**Windows:**
+```bash
+# Development with monitoring (recommended)
+./docker-start.bat dev -m -d
+
+# Production with monitoring
+./docker-start.bat prod -m -d
+
+# Full monitoring stack
+./docker-start.bat monitoring -d
+```
+
+**Linux/macOS:**
+```bash
+# Development with monitoring (recommended)
+./docker-start.sh dev -m -d
+
+# Production with monitoring
+./docker-start.sh prod -m -d
+
+# Full monitoring stack
+./docker-start.sh monitoring -d
+```
+
+### 📋 Deployment Options
+
+#### **Option 1: Basic Stack (No Monitoring)**
+```bash
+# Development
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+# Production
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+**Includes:** GMX Indexer, PostgreSQL, Redis, Prometheus, Grafana, Nginx
+
+#### **Option 2: Complete Stack (With Monitoring)** ⭐ **Recommended**
+```bash
+# Development with monitoring
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.monitoring.yml up -d
+
+# Production with monitoring
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.monitoring.yml up -d
+```
+
+**Includes:** Everything above + PostgreSQL/Redis exporters, Node exporter, cAdvisor, Alertmanager, Loki, Jaeger
+
+#### **Option 3: Full Monitoring Stack**
+```bash
+# Complete observability suite
+docker-compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
+```
+
+### 🔧 Script Options
+
+| Flag | Description |
+|------|-------------|
+| `dev` | Development environment (default) |
+| `prod` | Production environment |
+| `monitoring` | Full monitoring stack |
+| `-d, --detached` | Run in background |
+| `-m, --monitoring` | Include monitoring exporters |
+| `-p, --pull` | Pull latest images |
+| `-r, --reset` | Reset all data (⚠️ **DATA LOSS**) |
+| `-h, --help` | Show help |
+
+### 📊 Access Points
+
+#### **Development Mode:**
+- **GraphQL API:** http://localhost:42069/graphql
+- **GraphQL Playground:** http://localhost:42069/graphiql
+- **Grafana Dashboards:** http://localhost:3000 (admin/admin)
+- **Prometheus Metrics:** http://localhost:9091
+- **PostgreSQL:** localhost:5432 (gmx_user/devpassword)
+- **Redis:** localhost:6379
+
+#### **Production Mode:**
+- **GraphQL API:** http://localhost/graphql
+- **Health Check:** http://localhost/health
+- **Grafana:** http://localhost:3000
+- **Prometheus:** http://localhost:9091
+- **Database/Redis:** Internal network only
+
+#### **Full Monitoring Stack:**
+- **Alertmanager:** http://localhost:9093
+- **Jaeger Tracing:** http://localhost:16686
+- **Loki Logs:** http://localhost:3100
+
+### 🏥 Health Monitoring
+
+When monitoring is enabled, you get comprehensive health dashboards:
+
+- **PostgreSQL Health:** Database performance, connections, locks
+- **Redis Health:** Memory usage, key counts, cache hit rates
+- **Application Metrics:** Request rates, response times, errors
+- **Infrastructure:** CPU, memory, disk, network metrics
+
+### 🛠 Management Commands
+
+```bash
+# Check container status
+docker-compose ps
+
+# View logs (all services)
+docker-compose logs -f
+
+# View logs (specific service)
+docker-compose logs -f gmx-indexer
+
+# Stop stack
+docker-compose down
+
+# Stop and remove volumes (⚠️ DATA LOSS)
+docker-compose down -v
+
+# Update and restart
+./docker-start.bat dev -p -m -d
+```
+
+### ⚙️ Configuration Files
+
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | Base services configuration |
+| `docker-compose.dev.yml` | Development overrides |
+| `docker-compose.prod.yml` | Production overrides |
+| `docker-compose.monitoring.yml` | Monitoring stack |
+| `.env` | Environment variables |
+| `docker-start.bat/.sh` | Startup scripts |
+
+### 🔒 First-Time Setup
+
+1. **Copy environment template:**
    ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+   cp .env.example .env
    ```
 
-2. **Production deployment:**
+2. **Configure required variables in `.env`:**
    ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+   PONDER_RPC_URL_5003=https://rpc.sepolia.mantle.xyz
+   POSTGRES_PASSWORD=your_secure_password
    ```
+
+3. **Start with monitoring (recommended):**
+   ```bash
+   ./docker-start.bat dev -m -d
+   ```
+
+### 📈 Why Use Monitoring?
+
+- **Performance Insights:** Track database and application performance
+- **Issue Detection:** Get alerts before problems affect users
+- **Resource Planning:** Monitor memory, CPU, and storage usage
+- **Query Optimization:** Identify slow database queries
+- **Operational Visibility:** Full observability into your indexer
 
 ## Environment Variables
 
