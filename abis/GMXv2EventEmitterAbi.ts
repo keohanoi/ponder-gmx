@@ -170,5 +170,176 @@ export const gmxv2EventEmitterAbi = [
     ],
     "name": "SwapExecuted",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": false, "name": "msgSender", "type": "address"},
+      {"indexed": false, "name": "eventName", "type": "string"},
+      {"indexed": true, "name": "eventNameHash", "type": "string"},
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "address"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "address[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "addressItems",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "uint256"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "uint256[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "uintItems",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "int256"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "int256[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "intItems",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "bool"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "bool[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "boolItems",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "bytes32"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "bytes32[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "bytes32Items",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "bytes"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "bytes[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "bytesItems",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "string"}
+                ],
+                "name": "items",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {"name": "key", "type": "string"},
+                  {"name": "value", "type": "string[]"}
+                ],
+                "name": "arrayItems",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "stringItems",
+            "type": "tuple"
+          }
+        ],
+        "indexed": false,
+        "name": "eventData",
+        "type": "tuple"
+      }
+    ],
+    "name": "EventLog1",
+    "type": "event"
   }
 ] as const;
