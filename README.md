@@ -97,7 +97,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.monitoring.yml up -d
 ```
 
-**Includes:** Everything above + PostgreSQL/Redis exporters, Node exporter, cAdvisor, Alertmanager, Loki, Jaeger
+**Includes:** Everything above + PostgreSQL/Redis exporters
 
 #### **Option 3: Full Monitoring Stack**
 ```bash
@@ -135,19 +135,18 @@ docker-compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
 - **Prometheus:** http://localhost:9091
 - **Database/Redis:** Internal network only
 
-#### **Full Monitoring Stack:**
-- **Alertmanager:** http://localhost:9093
-- **Jaeger Tracing:** http://localhost:16686
-- **Loki Logs:** http://localhost:3100
+#### **Monitoring Tools:**
+- **Prometheus Metrics:** http://localhost:9091
+- **Grafana Dashboards:** http://localhost:3000 (admin/admin)
 
 ### 🏥 Health Monitoring
 
 When monitoring is enabled, you get comprehensive health dashboards:
 
-- **PostgreSQL Health:** Database performance, connections, locks
-- **Redis Health:** Memory usage, key counts, cache hit rates
-- **Application Metrics:** Request rates, response times, errors
-- **Infrastructure:** CPU, memory, disk, network metrics
+- **PostgreSQL Health:** Database performance, connections, locks (via PostgreSQL exporter)
+- **Redis Health:** Memory usage, key counts, cache hit rates (via Redis exporter)
+- **Application Metrics:** Request rates, response times, errors (via Ponder built-in metrics)
+- **System Metrics:** Available through Prometheus and visualized in Grafana
 
 ### 🛠 Management Commands
 
@@ -202,11 +201,11 @@ docker-compose down -v
 
 ### 📈 Why Use Monitoring?
 
-- **Performance Insights:** Track database and application performance
-- **Issue Detection:** Get alerts before problems affect users
-- **Resource Planning:** Monitor memory, CPU, and storage usage
-- **Query Optimization:** Identify slow database queries
-- **Operational Visibility:** Full observability into your indexer
+- **Performance Insights:** Track database and application performance via Grafana dashboards
+- **Resource Planning:** Monitor memory, CPU, and storage usage with Prometheus metrics
+- **Query Optimization:** Identify slow database queries through PostgreSQL metrics
+- **Cache Performance:** Monitor Redis performance and hit rates
+- **Operational Visibility:** Full observability into your indexer through comprehensive dashboards
 
 ## Environment Variables
 
