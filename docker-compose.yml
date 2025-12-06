@@ -77,7 +77,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    container_name: gmx-indexer
+    image: gmx-ponder:latest
+    container_name: gmx-ponder
     restart: unless-stopped
     environment:
       # Database Configuration

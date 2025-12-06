@@ -25,6 +25,7 @@ services:
     environment:
       NODE_ENV: development
       PONDER_LOG_LEVEL: debug
+      PONDER_LOG_FORMAT: pretty
       DATABASE_URL: postgresql://gmx_user:devpassword@postgres:5432/gmx_indexer
       DATABASE_SCHEMA: gmx_indexer
       REDIS_URL: redis://redis:6379

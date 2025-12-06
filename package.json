@@ -4,8 +4,8 @@
   "description": "GMX v2 Indexer for Mantle Sepolia using Ponder",
   "type": "module",
   "scripts": {
-    "dev": "ponder dev",
-    "start": "ponder start",
+    "dev": "ponder dev --log-format pretty --disable-ui",
+    "start": "ponder start --log-format pretty",
     "serve": "ponder serve",
     "codegen": "ponder codegen",
     "db:migrate": "ponder db migrate"
